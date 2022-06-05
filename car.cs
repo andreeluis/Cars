@@ -9,10 +9,7 @@
             {
                 return _id;
             }
-            set
-            {
-                //_id = value;
-            }
+            //set { _id = value; }
         }
 
         private string _model;
@@ -35,10 +32,7 @@
             {
                 return _year;
             }
-            set
-            {
-                //_year = value;
-            }
+            //set{ _year = value; }
         }
 
         private string _color;
@@ -54,19 +48,6 @@
             }
         }
 
-        private float _maxVelocity;
-        public float maxVelocity
-        {
-            get
-            {
-                return _maxVelocity;
-            }
-            set
-            {
-                _maxVelocity = value;
-            }
-        }
-
         private float _traveledKm;
         public float traveledKm
         {
@@ -74,19 +55,24 @@
             {
                 return _traveledKm;
             }
-            set
-            {
-                //_traveledKm = value;
-            }
+            //set { _traveledKm = value; }
         }
 
-        public Car(string model, int year, string color, float maxVelocity, float traveledKm)
+        public static Car CreateCar(int id)
         {
-            this.model = model;
-            this.year = year;
-            this.color = color;
-            this.maxVelocity = maxVelocity;
-            this.traveledKm = traveledKm;
+            Car car = new Car();
+
+            car._id = id;
+            Console.Write("Modelo do carro: ");
+            car._model = Console.ReadLine();
+            Console.Write("Ano do carro: ");
+            car._year = Convert.ToInt16(Console.ReadLine());
+            Console.Write("Cor do carro: ");
+            car._color = Console.ReadLine();
+            Console.Write("Quilometragem: ");
+            car._traveledKm = float.Parse(Console.ReadLine());
+
+            return car;
         }
     }
 }
