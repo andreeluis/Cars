@@ -2,7 +2,7 @@
 {
     internal class Car
     {
-        public Guid Id { get; }
+        public string Id { get; }
         public string Brand { get; }
         public string Model { get; }
         public string Color { get; set; }
@@ -10,11 +10,20 @@
 
         public Car (string brand, string model, string color, double km)
         {
-            Id = Guid.NewGuid ();
+            Id = Guid.NewGuid().ToString().Substring(0,8);
             Brand = brand;
             Model = model;
             Color = color;
             Km = km;
+        }
+
+        public Car(List<string> list)
+        {
+            Id = list[0];
+            Brand = list[1];
+            Model = list[2];
+            Color = list[3];
+            Km = Convert.ToDouble(list[4]);
         }
     }
 }
