@@ -30,23 +30,50 @@ namespace Cars
 
                 while (line != null)
                 {
-                    var car = new List<string> (line.Split(','));
+                    var tempCar = new List<string> (line.Split(','));
 
-                    cars.Add(new Car(car));
+                    cars.Add(new Car(tempCar));
 
                     line = readFile.ReadLine();
                 }
             }
-
             return cars;
         }
 
-        public void Update()
+        public static void Update(string carToEdit, Car car)
         {
+            string path = SetPath();
+            var cars = new List<Car>();
 
+            using (var readFile = new StreamReader(path))
+            {
+                string line = readFile.ReadLine();
+
+                while (line != null)
+                {
+                    var tempCar = new List<string>(line.Split(','));
+
+                    cars.Add(new Car(tempCar));
+                    
+                    line = readFile.ReadLine();
+                }
+            }
+
+            for (int i = 0; i <= cars.Count(); i++)
+            {
+                if (cars[i].Id == carToEdit)
+                {
+                    cars[i] = car;
+                }
+            }
+
+            using (var writeFile = new StreamWriter(path, false))
+            {
+                writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
+            }
         }
 
-        public void Delete()
+        public static void Delete()
         {
 
         }
