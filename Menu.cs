@@ -2,7 +2,12 @@
 {
     internal class Menu
     {
-        public static void Show()
+        // Criar metodo para selecionar Path
+
+
+        private List<Car> ListOfCars = new Data(@"C:\files\test.txt").ReadCars();
+
+        public Menu()
         {
             Console.Clear();
             Console.WriteLine("Gerenciador de Carros - POO");
@@ -17,16 +22,16 @@
             {
                 case 1: AddCar(); break;
                 case 2: ViewCars(); break;
-                case 3:
-                case 4:
+                case 3: EditCar(); break;
+                case 4: DeleteCar(); break;
                 case 0: Console.Clear(); Environment.Exit(0); break;
-                default: Console.Clear(); Show(); break;
+                default: Console.Clear(); new Menu(); break;
             }
         }
 
-        public static void AddCar()
+        private static void AddCar()
         {
-            Console.WriteLine("Digite as informações sobre o carro:\n");
+            /*Console.WriteLine("Digite as informações sobre o carro:\n");
             Console.Write("Marca do carro: ");
             string brand = Console.ReadLine();
             Console.Write("Modelo do carro: ");
@@ -45,7 +50,7 @@
 
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0,1)))
             {
-                case 'N': Menu.Show(); break;
+                case 'N': Show(); break;
                 case 'S':
                 default: break;
             }
@@ -60,23 +65,35 @@
             Thread.Sleep(300);
             Console.Write("\n\nCarro adicionado com sucesso.");
             Thread.Sleep(2500);
-            Menu.Show();
+            Menu.Show(); */
+
+            throw new NotImplementedException();
         }
 
-        private static void ViewCars()
+        private void ViewCars()
         {
             Console.WriteLine("Estes são os carros cadastrados:");
             Console.WriteLine("*----*--***--*----*");
-            foreach (Car car in Data.Read())
+
+            foreach (Car car in ListOfCars)
             {
-                Console.WriteLine($"Carro {car.Id}:");
-                Console.WriteLine($"\nMarca: {car.Brand}");
-                Console.WriteLine($"Modelo: {car.Model}");
-                Console.WriteLine($"Cor: {car.Color}");
-                Console.WriteLine($"Quilometragem: {car.Km}");
-                Console.WriteLine("\n---*--*--*---");
+                car.ViewCar();
+                Console.WriteLine("---*--*--*---");
             }
-            
+        }
+
+        private static void EditCar()
+        {
+            /*Console.WriteLine("Dentre os carros cadastrados, digite o ID do carro que quer editar:");
+            ViewCars();
+            SelectCar();*/
+
+            throw new NotImplementedException();
+        }
+
+        private static void DeleteCar()
+        {
+            throw new NotImplementedException();
         }
     }
 }
