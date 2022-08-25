@@ -1,81 +1,49 @@
-﻿using System.IO;
-
-namespace Cars
+﻿namespace Cars
 {
     internal class Data
     {
-        public static string SetPath()
+        public string Path;
+
+        public Data(string path)
         {
-            return @"C:\files\test.txt";
+            Path = path;
         }
 
-        public static void Create(Car car)
+        public void WriteCar(Car car)
         {
-            string path = SetPath();
-
-            using (var writeFile = new StreamWriter(path, true))
+            using (var writeFile = new StreamWriter(Path, true))
             {
                 writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
             }
         }
 
-        public static List<Car> Read()
+        public void WriteCar(List<Car> cars)
         {
-            string path = SetPath();
+            using (var writeFile = new StreamWriter(Path, false))
+            {
+                foreach (Car car in cars)
+                {
+                    writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
+                }
+            }
+        }
+
+        public List<Car> ReadCars()
+        {
             var cars = new List<Car>();
 
-            using (var readFile = new StreamReader(path))
+            using (var readFile = new StreamReader(Path))
             {
                 string line = readFile.ReadLine();
 
                 while (line != null)
                 {
-                    var tempCar = new List<string> (line.Split(','));
-
-                    cars.Add(new Car(tempCar));
+                    cars.Add(new Car(new List<string>(line.Split(','))));
 
                     line = readFile.ReadLine();
                 }
             }
             return cars;
-        }
-
-        public static void Update(string carToEdit, Car car)
-        {
-            string path = SetPath();
-            var cars = new List<Car>();
-
-            using (var readFile = new StreamReader(path))
-            {
-                string line = readFile.ReadLine();
-
-                while (line != null)
-                {
-                    var tempCar = new List<string>(line.Split(','));
-
-                    cars.Add(new Car(tempCar));
-                    
-                    line = readFile.ReadLine();
-                }
-            }
-
-            for (int i = 0; i <= cars.Count(); i++)
-            {
-                if (cars[i].Id == carToEdit)
-                {
-                    cars[i] = car;
-                }
-            }
-
-            using (var writeFile = new StreamWriter(path, false))
-            {
-                writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
-            }
-        }
-
-        public static void Delete()
-        {
-
         }
     }
 }
