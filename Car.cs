@@ -25,5 +25,15 @@
             Color = list[3];
             Km = Convert.ToDouble(list[4]);
         }
+
+        public void ViewCar()
+        {
+            Console.WriteLine($"Carro {Id}\n");
+            Console.WriteLine($"Marca: {Brand}");
+            Console.WriteLine($"Modelo: {Model}");
+            Console.WriteLine($"Cor: {Color}");
+            Console.WriteLine($"Quilometragem: {Km}");
+        }
+
     }
 }
