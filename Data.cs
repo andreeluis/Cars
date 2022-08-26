@@ -9,23 +9,37 @@
             Path = path;
         }
 
-        public void WriteCar(Car car)
+        public Data()
         {
-            using (var writeFile = new StreamWriter(Path, true))
+            Path = @"C:\files\test.txt";
+        }
+
+        public void WriteCar(Car car, bool apend)
+        {
+            using (var writeFile = new StreamWriter(Path, apend))
             {
                 writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
             }
         }
 
-        public void WriteCar(List<Car> cars)
+        public void WriteCar(List<Car> cars, bool apend)
         {
-            using (var writeFile = new StreamWriter(Path, false))
+            using (var writeFile = new StreamWriter(Path, apend))
             {
                 foreach (Car car in cars)
                 {
                     writeFile.WriteLine($"{car.Id},{car.Brand},{car.Model},{car.Color},{car.Km}");
                 }
             }
+        }
+
+        public void EditCar(List<Car> cars, Car oldCar, Car newCar)
+        {
+            var updatedCars = cars;
+
+            updatedCars[cars.FindIndex(Car => Car.Id == oldCar.Id)] = newCar;
+
+            WriteCar(updatedCars, false);
         }
 
         public List<Car> ReadCars()
