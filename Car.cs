@@ -28,11 +28,11 @@
 
         public void ViewCar()
         {
-            Console.WriteLine($"Carro {Id}\n");
-            Console.WriteLine($"Marca: {Brand}");
-            Console.WriteLine($"Modelo: {Model}");
-            Console.WriteLine($"Cor: {Color}");
-            Console.WriteLine($"Quilometragem: {Km}");
+            Console.WriteLine(@$"   Carro {Id}");
+            Console.WriteLine(@$"      Marca: {Brand}");
+            Console.WriteLine(@$"      Modelo: {Model}");
+            Console.WriteLine(@$"      Cor: {Color}");
+            Console.WriteLine(@$"      Quilometragem: {Km}");
         }
 
         public static Car SelectCar(List<Car> ListOfCars)
@@ -43,19 +43,21 @@
                 validID.Add(car.Id);
             }
 
-            Console.Write("Digite o ID do carro: ");
+            Console.Write(@"   Digite o ID do carro (0 para voltar ao menu): ");
             string typedID = Console.ReadLine();
             while (!validID.Contains(typedID))
             {
                 if (!validID.Contains(typedID))
                 {
-                    Console.Write("\nID invalido, digite novamente: ");
+                    if (typedID == "0") new Menu();
+
+                    Console.Write(@"   ID invalido, digite novamente: ");
                     typedID = Console.ReadLine();
                 }
             }
 
             Console.Clear();
-            Console.WriteLine("Este foi o carro selecionado:");
+            Console.WriteLine("Este foi o carro selecionado:\n");
             ListOfCars.Find(Car => Car.Id == typedID).ViewCar();
             return ListOfCars.Find(Car => Car.Id == typedID);
         }

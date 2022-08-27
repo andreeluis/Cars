@@ -33,15 +33,6 @@
             }
         }
 
-        public void EditCar(List<Car> cars, Car oldCar, Car newCar)
-        {
-            var updatedCars = cars;
-
-            updatedCars[cars.FindIndex(Car => Car.Id == oldCar.Id)] = newCar;
-
-            WriteCar(updatedCars, false);
-        }
-
         public List<Car> ReadCars()
         {
             var cars = new List<Car>();
@@ -58,6 +49,20 @@
                 }
             }
             return cars;
+        }
+    
+        public void EditCar(List<Car> cars, Car oldCar, Car newCar)
+        {
+            cars[cars.FindIndex(Car => Car.Id == oldCar.Id)] = newCar;
+
+            WriteCar(cars, false);
+        }
+    
+        public void DeleteCar(List<Car> cars, Car deleteCar)
+        {
+            cars.RemoveAt(cars.FindIndex(Car => Car.Id == deleteCar.Id));
+
+            WriteCar(cars, false);
         }
     }
 }

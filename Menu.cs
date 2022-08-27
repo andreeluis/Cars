@@ -9,20 +9,21 @@
         public Menu()
         {
             Console.Clear();
+      
             Console.WriteLine("Gerenciador de Carros - POO");
 
-            Console.WriteLine("01 - Adicionar novo carro\n" +
-                              "02 - Ver carros registrados\n" +
-                              "03 - Editar carro existente\n" +
-                              "04 - Remover carro existente\n" +
-                              "00 - Sair\n");
+            Console.WriteLine(@"    01 - Adicionar novo carro
+    02 - Ver carros registrados
+    03 - Editar carro existente
+    04 - Remover carro existente
+        00 - Sair");
             Console.Write("Digite a opção que deseja: ");
             switch (Convert.ToInt16(Console.ReadLine()))
             {
-                case 1: AddCar(); break;
-                case 2: ViewCars(); break;
-                case 3: EditCar(); break;
-                case 4: DeleteCar(); break;
+                case 1: Console.Clear(); AddCar(); break;
+                case 2: Console.Clear(); ViewCars(); break;
+                case 3: Console.Clear(); EditCar(); break;
+                case 4: Console.Clear(); DeleteCar(); break;
                 case 0: Console.Clear(); Environment.Exit(0); break;
                 default: Console.Clear(); new Menu(); break;
             }
@@ -31,111 +32,167 @@
         private void AddCar()
         {
             Console.WriteLine("Digite as informações sobre o carro:\n");
-            Console.Write("Marca do carro: ");
+            Console.Write(@"    Marca do carro: ");
             string brand = Console.ReadLine();
-            Console.Write("Modelo do carro: ");
+            Console.Write(@"    Modelo do carro: ");
             string model = Console.ReadLine();
-            Console.Write("Cor do carro: ");
+            Console.Write(@"    Cor do carro: ");
             string color = Console.ReadLine();
-            Console.Write("Quilometragem do carro: ");
+            Console.Write(@"    Quilometragem do carro: ");
             double km = Convert.ToDouble(Console.ReadLine());
 
             Console.Clear();
-            Console.WriteLine($"Marca: {brand}");
-            Console.WriteLine($"Modelo: {model}");
-            Console.WriteLine($"Cor: {color}");
-            Console.WriteLine($"Quilometragem: {km}");
+            Console.WriteLine(@$"  Marca: {brand}");
+            Console.WriteLine(@$"  Modelo: {model}");
+            Console.WriteLine(@$"  Cor: {color}");
+            Console.WriteLine(@$"  Quilometragem: {km}");
             Console.Write("\nDeseja gravar esse carro? [S/N]");
 
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0,1)))
             {
-                case 'N': new Menu(); break;
-                case 'S':
+                case 's':
+                    new Data().WriteCar(new Car(brand, model, color, km), true);
+
+                    Console.Write("\n\tAdicionando carro aos registros .");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write("\n\n\tCarro adicionado com sucesso!");
+                    Thread.Sleep(1200);
+                    break;
+                case 'n':
                 default: break;
             }
-
-            new Data().WriteCar(new Car(brand, model, color, km), true);
-
-            Console.Write("\nAdicionando carro aos registros .");
-            Thread.Sleep(300);
-            Console.Write(" .");
-            Thread.Sleep(300);
-            Console.Write(" .");
-            Thread.Sleep(300);
-            Console.Write("\n\nCarro adicionado com sucesso.");
-            Thread.Sleep(2500);
             new Menu();
         }
 
         private void ViewCars()
         {
             Console.WriteLine("Estes são os carros cadastrados:");
-            Console.WriteLine("*----*--***--*----*");
+            Console.WriteLine(@"  _________________________");
 
             foreach (Car car in ListOfCars)
             {
                 car.ViewCar();
-                Console.WriteLine("---*--*--*---");
+                Console.WriteLine(@"  _________________________");
             }
+
+            Console.WriteLine("\n\nAperte qualquer tecla para voltar ao menu.");
+            Console.ReadKey();
+            new Menu();
         }
 
         private void EditCar()
         {
-            Console.WriteLine("Dentre os carros cadastrados, digite o ID do carro que quer editar: ");
-            ViewCars();
+            Console.WriteLine("Estes são os carros cadastrados:");
+            Console.WriteLine(@"  _________________________");
+            foreach (Car car in ListOfCars)
+            {
+                car.ViewCar();
+                Console.WriteLine(@"  _________________________");
+            }
 
             var selectedCar = Car.SelectCar(ListOfCars);
             var newCar = new List<string>();
 
-
-            Console.WriteLine("Digite as novas informações:");
-            Console.WriteLine($"ID do carro: {selectedCar.Id}");
+            Console.WriteLine(@" _____________________________");
+            Console.WriteLine(@"  Digite as novas informações");
+            Console.WriteLine(@$"    ID do carro: {selectedCar.Id}");
             newCar.Add(selectedCar.Id);
-            Thread.Sleep(400);
+            Thread.Sleep(200);
 
-            Console.WriteLine($"Marca do carro: {selectedCar.Brand}");
+            Console.WriteLine(@$"    Marca do carro: {selectedCar.Brand}");
             newCar.Add(selectedCar.Brand);
-            Thread.Sleep(400);
+            Thread.Sleep(200);
 
-            Console.WriteLine($"Modelo do carro: {selectedCar.Model}");
+            Console.WriteLine(@$"    Modelo do carro: {selectedCar.Model}");
             newCar.Add(selectedCar.Model);
-            Thread.Sleep(400);
+            Thread.Sleep(200);
 
-            Console.Write("Cor do carro: ");
+            Console.Write(@"    Cor do carro: ");
             string color = Console.ReadLine();
             newCar.Add(color);
 
-            Console.Write("Quilometragem do carro: ");
+            Console.Write(@"    Quilometragem do carro: ");
             double km = Convert.ToDouble(Console.ReadLine());
             while (km < selectedCar.Km)
             {
-                Console.WriteLine("Quilometragem invalida! Digite novamente");
-                Console.Write("Quilometragem do carro: ");
+                Console.WriteLine(@"      A nova quilometragem não pode ser menor que a anterior.");
+                Console.Write(@"      Quilometragem do carro: ");
                 km = Convert.ToDouble(Console.ReadLine());
             }
             newCar.Add(Convert.ToString(km));
 
 
             Console.Clear();
-            Console.WriteLine($"Marca: {selectedCar.Brand}");
-            Console.WriteLine($"Modelo: {selectedCar.Model}");
-            Console.WriteLine($"Cor: {color}");
-            Console.WriteLine($"Quilometragem: {km}");
-            Console.Write("\nDeseja gravar esse carro? [S/N]");
+            Console.WriteLine("Confirme as alterações:\n");
+            Console.WriteLine(@$"  Marca: {selectedCar.Brand}");
+            Console.WriteLine(@$"  Modelo: {selectedCar.Model}");
+            Console.WriteLine(@$"  Cor: {color}");
+            Console.WriteLine(@$"  Quilometragem: {km}");
+            Console.Write("\n\tDeseja gravar esse carro? [S/N]");
 
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0, 1)))
             {
-                case 'N': new Menu(); break;
-                case 'S':
+                case 's':
+                    new Data().EditCar(ListOfCars, selectedCar, new Car(newCar));
+
+                    Console.Write("\nEditando os registros do carro.");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write("\n\nCarro editado com sucesso.");
+                    Thread.Sleep(1200);
+                    break;
+                case 'n':
                 default: break;
             }
-
-            new Data().EditCar(ListOfCars, selectedCar, new Car(newCar));
+            new Menu();
         }
 
-        private static void DeleteCar()
+        private void DeleteCar()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Dentre os carros cadastrados, digite o ID do carro que deseja excluir: ");
+            Console.WriteLine(@"  _________________________");
+
+            foreach (Car car in ListOfCars)
+            {
+                car.ViewCar();
+                Console.WriteLine(@"  _________________________");
+            }
+
+            var selectedCar = Car.SelectCar(ListOfCars);
+
+            Console.Clear();
+            Console.WriteLine($"ID: {selectedCar.Id}");
+            Console.WriteLine($"Marca: {selectedCar.Brand}");
+            Console.WriteLine($"Modelo: {selectedCar.Model}");
+            Console.WriteLine($"Cor: {selectedCar.Color}");
+            Console.WriteLine($"Quilometragem: {selectedCar.Km}");
+            Console.Write("\nDeseja excluir esse carro? [S/N]");
+
+            switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0, 1)))
+            {
+                case 's':
+                    new Data().DeleteCar(ListOfCars, selectedCar);
+
+                    Console.Write("\nExcluindo os registros do carro.");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write(" .");
+                    Thread.Sleep(200);
+                    Console.Write("\n\nCarro excluido com sucesso.");
+                    Thread.Sleep(1200);
+                    break;
+                case 'n':
+                default: break;
+            }
+            new Menu();
         }
     }
 }
