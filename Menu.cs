@@ -32,21 +32,43 @@
         private void AddCar()
         {
             Console.WriteLine("Digite as informações sobre o carro:\n");
+
             Console.Write(@"    Marca do carro: ");
             string brand = Console.ReadLine();
+
             Console.Write(@"    Modelo do carro: ");
             string model = Console.ReadLine();
+
             Console.Write(@"    Cor do carro: ");
             string color = Console.ReadLine();
-            Console.Write(@"    Quilometragem do carro: ");
-            double km = Convert.ToDouble(Console.ReadLine());
+
+            string kmStr;
+            double km = -1;
+            do
+            {
+                Console.Write(@"    Quilometragem do carro: ");
+                kmStr = Console.ReadLine();
+                try
+                {
+                    km = Convert.ToDouble(kmStr);
+                }
+                catch
+                {
+                    Console.WriteLine(@"    Valor invalido!");
+                    continue;
+                }
+                if (km < 0)
+                {
+                    Console.WriteLine(@"     A quilometragem não pode ser menor que 0 Km.");
+                }
+            } while (km < 0);
 
             Console.Clear();
             Console.WriteLine(@$"  Marca: {brand}");
             Console.WriteLine(@$"  Modelo: {model}");
             Console.WriteLine(@$"  Cor: {color}");
             Console.WriteLine(@$"  Quilometragem: {km}");
-            Console.Write("\nDeseja gravar esse carro? [S/N]");
+            Console.Write("\nDeseja gravar esse carro? [S/N] ");
 
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0,1)))
             {
@@ -115,16 +137,27 @@
             string color = Console.ReadLine();
             newCar.Add(color);
 
-            Console.Write(@"    Quilometragem do carro: ");
-            double km = Convert.ToDouble(Console.ReadLine());
-            while (km < selectedCar.Km)
+            string kmStr;
+            double km = -1;
+            do
             {
-                Console.WriteLine(@"      A nova quilometragem não pode ser menor que a anterior.");
-                Console.Write(@"      Quilometragem do carro: ");
-                km = Convert.ToDouble(Console.ReadLine());
-            }
+                Console.Write(@"    Quilometragem do carro: ");
+                kmStr = Console.ReadLine();
+                try
+                {
+                    km = Convert.ToDouble(kmStr);
+                }
+                catch
+                {
+                    Console.WriteLine(@"    Valor invalido!");
+                    continue;
+                }
+                if (km < 0)
+                {
+                    Console.WriteLine(@"     A nova quilometragem não pode ser menor que a anterior.");
+                }
+            } while (km < 0);
             newCar.Add(Convert.ToString(km));
-
 
             Console.Clear();
             Console.WriteLine("Confirme as alterações:\n");
