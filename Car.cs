@@ -34,32 +34,5 @@
             Console.WriteLine(@$"      Cor: {Color}");
             Console.WriteLine(@$"      Quilometragem: {Km}");
         }
-
-        public static Car SelectCar(List<Car> ListOfCars)
-        {
-            var validID = new List<string>();
-            foreach (Car car in ListOfCars)
-            {
-                validID.Add(car.Id);
-            }
-
-            Console.Write(@"   Digite o ID do carro (0 para voltar ao menu): ");
-            string typedID = Console.ReadLine();
-            while (!validID.Contains(typedID))
-            {
-                if (!validID.Contains(typedID))
-                {
-                    if (typedID == "0") new Menu();
-
-                    Console.Write(@"   ID invalido, digite novamente: ");
-                    typedID = Console.ReadLine();
-                }
-            }
-
-            Console.Clear();
-            Console.WriteLine("Este foi o carro selecionado:\n");
-            ListOfCars.Find(Car => Car.Id == typedID).ViewCar();
-            return ListOfCars.Find(Car => Car.Id == typedID);
-        }
     }
 }

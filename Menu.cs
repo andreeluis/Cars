@@ -2,11 +2,44 @@
 {
     internal class Menu
     {
-        // Criar metodo para selecionar Path
-
-        public List<Car> ListOfCars = new Data().ReadCars();
+        DataBase DB;
+        List<Car> ListOfCars;
 
         public Menu()
+        {
+            Console.WriteLine("Gerenciador de Carros - POO\n");
+            DB = new DataBase(SetPath());
+            ShowMenu();
+        }
+
+        private static string SetPath()
+        {
+            Console.Write(@"    Selecione o caminho do arquivo (vazio para o caminho padrão): ");
+            string path = Console.ReadLine();
+            if (path == "")
+            {
+                Console.WriteLine(@"    C:\files\cars.txt selecionado com sucesso.");
+                return @"C:\files\cars.txt";
+            }
+            else
+            {
+                try
+                {
+                    new StreamWriter(@$"{path}\cars.txt", true);
+                    Console.WriteLine(@$"    {path} selecionado com sucesso.");
+                    return path;
+                }
+                catch
+                {
+                    Console.Clear();
+                    Console.WriteLine($"     O caminho ({path}) é invalido.");
+                    Thread.Sleep(1200);
+                    return SetPath();
+                }
+            }
+        }
+
+        private void ShowMenu()
         {
             Console.Clear();
       
@@ -73,7 +106,7 @@
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0,1)))
             {
                 case 's':
-                    new Data().WriteCar(new Car(brand, model, color, km), true);
+                    DB.WriteCar(new Car(brand, model, color, km), true);
 
                     Console.Write("\n\tAdicionando carro aos registros .");
                     Thread.Sleep(200);
@@ -87,36 +120,62 @@
                 case 'n':
                 default: break;
             }
-            new Menu();
+            ShowMenu();
+        }
+
+        private void ListCars()
+        {
+            ListOfCars = DB.ReadCars();
+
+            Console.WriteLine(@"  _________________________");
+
+            foreach (Car car in ListOfCars)
+            {
+                car.ViewCar();
+                Console.WriteLine(@"  _________________________");
+            }
+        }
+
+        public Car SelectCar()
+        {
+            Console.Write(@"   Digite o ID do carro (0 para voltar ao menu): ");
+            string typedID = Console.ReadLine();
+
+            while (ListOfCars.FindIndex(Car => Car.Id == typedID) == -1)
+            {
+                if (typedID == "0")
+                {
+                    ShowMenu();
+                }
+                else
+                {
+                    Console.Write(@"   ID invalido, digite novamente: ");
+                    typedID = Console.ReadLine();
+                }
+            }
+
+            Console.Clear();
+            Console.WriteLine("Este foi o carro selecionado:\n");
+            ListOfCars.Find(Car => Car.Id == typedID).ViewCar();
+            return ListOfCars.Find(Car => Car.Id == typedID);
         }
 
         private void ViewCars()
         {
             Console.WriteLine("Estes são os carros cadastrados:");
-            Console.WriteLine(@"  _________________________");
-
-            foreach (Car car in ListOfCars)
-            {
-                car.ViewCar();
-                Console.WriteLine(@"  _________________________");
-            }
+            ListCars();
 
             Console.WriteLine("\n\nAperte qualquer tecla para voltar ao menu.");
             Console.ReadKey();
-            new Menu();
+            ShowMenu();
         }
 
         private void EditCar()
         {
-            Console.WriteLine("Estes são os carros cadastrados:");
-            Console.WriteLine(@"  _________________________");
-            foreach (Car car in ListOfCars)
-            {
-                car.ViewCar();
-                Console.WriteLine(@"  _________________________");
-            }
+            Console.WriteLine("Dentre os carros cadastrados, digite o ID do carro que deseja editar: ");
+            ListCars();
 
-            var selectedCar = Car.SelectCar(ListOfCars);
+            var selectedCar = SelectCar();
             var newCar = new List<string>();
 
             Console.WriteLine(@" _____________________________");
@@ -170,7 +229,7 @@
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0, 1)))
             {
                 case 's':
-                    new Data().EditCar(ListOfCars, selectedCar, new Car(newCar));
+                    DB.EditCar(selectedCar, new Car(newCar));
 
                     Console.Write("\nEditando os registros do carro.");
                     Thread.Sleep(200);
@@ -184,21 +243,15 @@
                 case 'n':
                 default: break;
             }
-            new Menu();
+            ShowMenu();
         }
 
         private void DeleteCar()
         {
             Console.WriteLine("Dentre os carros cadastrados, digite o ID do carro que deseja excluir: ");
-            Console.WriteLine(@"  _________________________");
+            ListCars();
 
-            foreach (Car car in ListOfCars)
-            {
-                car.ViewCar();
-                Console.WriteLine(@"  _________________________");
-            }
-
-            var selectedCar = Car.SelectCar(ListOfCars);
+            var selectedCar = SelectCar();
 
             Console.Clear();
             Console.WriteLine($"ID: {selectedCar.Id}");
@@ -211,7 +264,7 @@
             switch (Convert.ToChar(Console.ReadLine().ToLower().Substring(0, 1)))
             {
                 case 's':
-                    new Data().DeleteCar(ListOfCars, selectedCar);
+                    DB.DeleteCar(selectedCar);
 
                     Console.Write("\nExcluindo os registros do carro.");
                     Thread.Sleep(200);
@@ -225,7 +278,7 @@
                 case 'n':
                 default: break;
             }
-            new Menu();
+            ShowMenu();
         }
     }
 }

@@ -1,17 +1,12 @@
 ﻿namespace Cars
 {
-    internal class Data
+    internal class DataBase
     {
         public string Path;
 
-        public Data(string path)
+        public DataBase(string path)
         {
             Path = path;
-        }
-
-        public Data()
-        {
-            Path = @"C:\files\test.txt";
         }
 
         public void WriteCar(Car car, bool apend)
@@ -51,15 +46,19 @@
             return cars;
         }
     
-        public void EditCar(List<Car> cars, Car oldCar, Car newCar)
+        public void EditCar(Car oldCar, Car newCar)
         {
+            var cars = ReadCars();
+
             cars[cars.FindIndex(Car => Car.Id == oldCar.Id)] = newCar;
 
             WriteCar(cars, false);
         }
     
-        public void DeleteCar(List<Car> cars, Car deleteCar)
+        public void DeleteCar(Car deleteCar)
         {
+            var cars = ReadCars();
+
             cars.RemoveAt(cars.FindIndex(Car => Car.Id == deleteCar.Id));
 
             WriteCar(cars, false);
