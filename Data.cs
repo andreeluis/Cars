@@ -1,10 +1,10 @@
 ﻿namespace Cars
 {
-    internal class DataBase
+    internal class Data
     {
         public string Path;
 
-        public DataBase(string path)
+        public Data(string path)
         {
             Path = path;
         }
@@ -46,11 +46,11 @@
             return cars;
         }
     
-        public void EditCar(Car oldCar, Car newCar)
+        public void EditCar(Car toEditCar)
         {
             var cars = ReadCars();
 
-            cars[cars.FindIndex(Car => Car.Id == oldCar.Id)] = newCar;
+            cars[cars.FindIndex(Car => Car.Id == toEditCar.Id)] = toEditCar;
 
             WriteCar(cars, false);
         }

@@ -33,6 +33,7 @@
             Console.WriteLine(@$"      Modelo: {Model}");
             Console.WriteLine(@$"      Cor: {Color}");
             Console.WriteLine(@$"      Quilometragem: {Km}");
+            Console.WriteLine();
         }
     }
 }
